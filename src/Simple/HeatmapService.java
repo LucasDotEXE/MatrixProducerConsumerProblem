@@ -17,9 +17,9 @@ public class HeatmapService {
 
         MatrixManipulator.forEachPosition(((locationValue, x, y) -> {
             if (locationValue == 1) {
-                ArrayList<Pair<Integer, Integer>> locationsInRange = new ArrayList<>(getLocationsInRange(townData, x, y, Config.homeRange)); //Find range of the building
+                ArrayList<Pair<Integer, Integer>> locationsInRange = new ArrayList<>(getLocationsInRange(townData, x, y)); //Find range of the building
 
-                boolean storeInRange = checkForStoresInRange(townData, locationsInRange);;
+                boolean storeInRange = checkForStoresInRange(townData, locationsInRange);
 
                 if (!storeInRange) {
                     markLocationsOnHeatmap(heatmap, locationsInRange, locationValue);
@@ -37,16 +37,16 @@ public class HeatmapService {
         return false;
     }
 
-    private static List<Pair<Integer, Integer>> getLocationsInRange(int[][] townData, int x, int y, int range) {
+    private static List<Pair<Integer, Integer>> getLocationsInRange(int[][] townData, int x, int y) {
         ArrayList<Pair<Integer, Integer>> locationsInRange = new ArrayList<>();
 
-        int homeRange = range;
+        int homeRange = Config.homeRange;
         while (homeRange > 0) {
             for (int i = 0; i < homeRange; i++) {
                 Pair<Integer, Integer> locationES = new Pair<>(x + homeRange-i, y + i); //
                 Pair<Integer, Integer> locationSW = new Pair<>(x - i, y + homeRange-i); //
-                Pair<Integer, Integer> locationWN = new Pair<>(x + -homeRange+i, y - i); //
-                Pair<Integer, Integer> locationNE = new Pair<>(x + i, y + -homeRange+i); //
+                Pair<Integer, Integer> locationWN = new Pair<>(x - homeRange + i, y - i); //
+                Pair<Integer, Integer> locationNE = new Pair<>(x + i, y - homeRange + i); //
 
                 locationsInRange.add(locationES);
                 locationsInRange.add(locationSW);
